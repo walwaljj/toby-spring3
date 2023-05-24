@@ -3,7 +3,7 @@ package com.example.tobyspring3.domain;
 public class User {
     String id;
     String name;
-
+ 
     String password;
 
     public String getId() {
