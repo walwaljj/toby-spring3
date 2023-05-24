@@ -7,7 +7,11 @@ import java.util.Map;
 import static java.lang.System.getenv;
 
 public class UserDao {
-    SimpleConnectionMaker sc = new SimpleConnectionMaker();
+    private ConnectionMaker cm;
+
+    public UserDao() {
+        cm = new DConnectionMaker();
+    }
 
     private static void close(Connection conn, PreparedStatement pstmt) throws SQLException {
         pstmt.close();
@@ -16,7 +20,7 @@ public class UserDao {
 
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection conn = sc.makeNewConnection();
+        Connection conn = cm.makeConnection();
 
         PreparedStatement pstmt = conn.prepareStatement("insert into user(id, name, password) values(?, ?, ?)");
         pstmt.setString(1,user.getId());
@@ -30,7 +34,7 @@ public class UserDao {
 
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection conn = sc.makeNewConnection();
+        Connection conn = cm.makeConnection();
         PreparedStatement pstmt = conn.prepareStatement("select id, name, password from user where id = ? ");
         pstmt.setString(1,id);
         ResultSet rs = pstmt.executeQuery();
