@@ -6,23 +6,14 @@ import java.util.Map;
 
 import static java.lang.System.getenv;
 
-public class UserDao {
+public  abstract class UserDao {
     private static void close(Connection conn, PreparedStatement pstmt) throws SQLException {
         pstmt.close();
         conn.close();
     }
 
-    private static Connection getConnection() throws ClassNotFoundException, SQLException {
-        Map<String,String> env = getenv();
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(
-                dbHost, dbUser, dbPassword
-        ); // DB에 접속을 하겠다.
-        return conn;
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
@@ -56,7 +47,7 @@ public class UserDao {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao userDao = new UserDao();
+        UserDao userDao = new NUserDao();
         User user = new User();
         user.setId("3");
         user.setName("삼삼");
