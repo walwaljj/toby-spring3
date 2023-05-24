@@ -7,9 +7,8 @@ import java.util.Map;
 
 import static java.lang.System.getenv;
 
-public class NUserDao extends UserDao{
-
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+public class SimpleConnectionMaker {
+    public Connection makeNewConnection() throws ClassNotFoundException, SQLException {
         Map<String,String> env = getenv();
         String dbHost = env.get("DB_HOST");
         String dbUser = env.get("DB_USER");
@@ -17,7 +16,7 @@ public class NUserDao extends UserDao{
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(
                 dbHost, dbUser, dbPassword
-        ); // DB에 접속을 하겠다.
+        );
         return conn;
     }
 }
